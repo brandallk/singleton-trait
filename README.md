@@ -1,13 +1,10 @@
-# README #
+# PHP Singleton Trait #
 
-Singleton trait variant that can accept a variable-length argument list in
+A singleton trait variant that can accept a variable-length argument list in
 the constructor. Prevents direct/indirect attempts to reinstatiate.
 
-Does not include a __construct method. A constructor located here could
-not assign argument values to class properties.
-
-Instantiating class must implement a private __construct method. (See example
-below.)
+Does not itself include the __construct method. Any class using the trait must
+implement a private __construct method. (See example below.)
 
 ## Example Usage:
 
@@ -23,23 +20,23 @@ class SingletonInstance
      *
      * @var array
      */
-    private $initArgs;
+    private $args;
 
     /**
      * Accepts a variable-length argument list into the constructor.
      *
      * @return void
      */
-    private function __construct($initArgs)
+    private function __construct($args)
     {
-        $this->initArgs = (array) $initArgs;
+        $this->args = (array) $args;
     }
 
-    // Example method that uses the $initArgs array
+    // Example method that uses the $args array
     public function doSomethingWith($someValue)
     {
         echo "Doing something with ";
-        foreach ( $this->initArgs as $arg ) {
+        foreach ( $this->args as $arg ) {
             echo "{$arg} ";
         }
         echo " and {$someValue}.";
@@ -54,10 +51,10 @@ singleton is created:
 ```
 <?php
 
-$inst = SingletonInstance::getInstance("initArg1", "initArg2");
+$inst = SingletonInstance::getInstance("arg1", "arg2");
 
 $testMessage = $inst->doSomethingWith("someOtherValue");
-// → Doing something with initArg1 initArg2 and someOtherValue.
+// → Doing something with arg1 arg2 and someOtherValue.
 
 ```
 
